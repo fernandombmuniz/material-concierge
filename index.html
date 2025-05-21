@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo de Vendas - Concierge Segurança Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - BANT: Text + Table + JS for interactive question display (Goal: Guide).
+        - Perfis: Text + Table + JS tabs (Goal: Guide).
+        - Persuasão: Text + JS accordions (Goal: Inform).
+        - Cybersecurity Stats: Text + Chart.js bar chart (1780 incidents, 1537 leaks) (Goal: Inform/Convince with data). Chart.js used for dynamic canvas rendering.
+        - IT Challenges: Text (Goal: Inform/Empathize).
+        - Concierge Solution: Text + JS tabs for services/value prop (Goal: Inform/Sell).
+        - Scripts: Text + JS accordions/tabs (Goal: Guide/Reference).
+        - Recomendações: Text (Goal: Reinforce).
+        All textual content is extracted from the source report. Interactions are designed for quick information retrieval. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .nav-link.active {
+            background-color: #0284c7; /* sky-600 */
+            color: white;
+        }
+        .accordion-content {
+            display: none;
+            transition: max-height 0.2s ease-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 flex flex-col md:flex-row min-h-screen">
+
+    <nav class="bg-slate-800 text-white w-full md:w-64 p-4 space-y-2 md:sticky md:top-0 md:h-screen overflow-y-auto">
+        <h2 class="text-xl font-semibold mb-4">Concierge Sales Guide</h2>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700 active" data-target="home">Visão Geral</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="bant">Metodologia BANT</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="perfis">Perfis de Cliente</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="persuasao">Princípios de Persuasão</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="contexto">Contexto e Dor</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="solucao">Solução Concierge</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="scripts">Roteiros de Abordagem</a>
+        <a href="#" class="nav-link block py-2 px-3 rounded-lg hover:bg-slate-700" data-target="recomendacoes">Recomendações Finais</a>
+    </nav>
+
+    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+        <section id="home" class="content-section active">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">Bem-vindo ao Guia Interativo de Vendas Concierge!</h1>
+            <p class="mb-4 text-lg">Esta aplicação foi criada para auxiliar você, Executivo de Contas Jr. da Concierge Segurança Digital, a navegar e utilizar o "Roteiro de Abordagem para Primeiro Contato" de forma eficiente e interativa.</p>
+            <p class="mb-4">Aqui você encontrará todas as seções do roteiro organizadas para fácil acesso:</p>
+            <ul class="list-disc list-inside mb-4 space-y-1">
+                <li>Metodologia BANT detalhada com perguntas-chave.</li>
+                <li>Perfis de cliente e como adaptar sua comunicação.</li>
+                <li>Princípios de persuasão de Cialdini aplicados a vendas.</li>
+                <li>Contextualização da dor com dados do cenário de cibersegurança.</li>
+                <li>Desafios comuns enfrentados pelas equipes de TI.</li>
+                <li>Apresentação das soluções e proposta de valor da Concierge.</li>
+                <li>Roteiros de abordagem detalhado e direto.</li>
+                <li>Recomendações finais para maximizar seu sucesso.</li>
+            </ul>
+            <p>Utilize a navegação ao lado para explorar cada seção. Esperamos que esta ferramenta potencialize suas abordagens e contribua para o seu sucesso!</p>
+        </section>
+
+        <section id="bant" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">II. Fundamentos da Qualificação de Leads: A Metodologia BANT</h1>
+            <p class="mb-4">A metodologia BANT (Budget, Authority, Need, Timing), concebida pela IBM, constitui uma ferramenta robusta para a qualificação de leads. A sua aplicação assegura que o tempo e os recursos de vendas sejam direcionados para oportunidades que demonstram o maior potencial de conversão.</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Budget (Orçamento)</h3>
+                    <p>Identificar a capacidade de investimento do lead. Perguntas devem ser diretas, mas sensíveis, buscando mapear a previsão de investimento ou verbas específicas para segurança.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Authority (Autoridade)</h3>
+                    <p>Garantir interação com o decisor ou influenciador direto. Identificar múltiplos *stakeholders* envolvidos.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Need (Necessidade)</h3>
+                    <p>Avaliar a necessidade genuína e desafios de segurança. Perguntas direcionadas aos problemas atuais, consequências da inação e impacto positivo da solução.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Timing (Prazo)</h3>
+                    <p>Avaliar a urgência e o momento estratégico. Perguntas sobre prazos, urgência e projetos concorrentes.</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-semibold mt-8 mb-4 text-sky-700">Perguntas Essenciais BANT</h3>
+            <div class="overflow-x-auto bg-white p-4 rounded-lg shadow">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critério BANT</th>
+                            <th>Perguntas Sugeridas para o Primeiro Contato</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Budget</strong></td>
+                            <td>"Qual é o orçamento previsto para iniciativas de segurança digital este ano?" <br> "Vocês já investem em alguma solução de segurança semelhante, e qual foi o investimento?" <br> "Há uma previsão de investimento para esse tipo de projeto nos próximos meses?"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Authority</strong></td>
+                            <td>"Quem mais participa da decisão sobre a contratação de serviços de segurança digital?" <br> "Você é a pessoa responsável pela aprovação final dessa iniciativa?" <br> "Há algum outro departamento ou comitê envolvido no processo de avaliação e aprovação?"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Need</strong></td>
+                            <td>"Qual o maior desafio que sua empresa enfrenta hoje em relação à segurança digital?" <br> "Como vocês estão lidando com a sobrecarga da equipe de TI em relação à segurança e monitoramento?" <br> "Que tipo de problema pode ocasionar suas operações institucionais ficarem inoperantes por dias devido a um ataque, ou vazamento de dados?"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Timing</strong></td>
+                            <td>"Quando vocês pretendem implementar uma solução para fortalecer a segurança digital?" <br> "Existe alguma urgência ou prazo específico que precisamos considerar para essa iniciativa?" <br> "Há outros projetos de TI ou segurança concorrendo com essa prioridade no momento?"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-6 bg-sky-100 p-4 rounded-lg border border-sky-300 text-sky-800"><strong>Insight:</strong> A aplicação estruturada do BANT desde o primeiro contato otimiza a eficiência do processo de vendas e aprimora o relacionamento com o cliente, transformando interações iniciais em conversas direcionadas e orientadas para o valor.</p>
+        </section>
+
+        <section id="perfis" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">III. Adaptando a Abordagem: Perfis de Cliente</h1>
+            <p class="mb-4">Compreender o perfil psicológico do cliente é crucial. A adaptação da comunicação ao estilo do interlocutor é fundamental para criar *rapport* e aumentar a receptividade.</p>
+            
+            <div class="overflow-x-auto bg-white p-4 rounded-lg shadow">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Perfil de Cliente</th>
+                            <th>Características Principais</th>
+                            <th>Estratégias de Comunicação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Pragmático</strong></td>
+                            <td>Exigente, pesquisa, compara, busca rapidez e resultados.</td>
+                            <td>Vá direto ao ponto, foco em resultados e eficiência. Transparência e segurança. Evite rodeios.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analítico</strong></td>
+                            <td>Gosta de informações detalhadas, faz muitas perguntas, pode ser indeciso.</td>
+                            <td>Seja paciente, forneça dados, fatos e lógica. Explique com calma e profundidade.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Afável</strong></td>
+                            <td>Confia no vendedor, valoriza o relacionamento, gosta de conversar.</td>
+                            <td>Seja gentil e atencioso. Construa *rapport*, demonstre empatia e interesse genuíno.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Expressivo</strong></td>
+                            <td>Gosta de ser o centro das atenções, informal, passional.</td>
+                            <td>Seja próximo, mas profissional. Permita que ele se expresse, valorize suas ideias e use linguagem entusiasta.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-6 bg-sky-100 p-4 rounded-lg border border-sky-300 text-sky-800"><strong>Insight:</strong> A eficácia do BANT é amplificada quando combinada com a adaptação da comunicação ao perfil do cliente. O sucesso nas vendas não se resume a ter as perguntas certas, mas a dominar a arte da comunicação empática e personalizada.</p>
+        </section>
+
+        <section id="persuasao" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">IV. A Arte da Persuasão no Primeiro Contato</h1>
+            <p class="mb-4">Os princípios da persuasão de Robert Cialdini são ferramentas poderosas para influenciar decisões de forma ética.</p>
+            <div class="space-y-3">
+                <div class="accordion-item bg-white p-4 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-xl font-semibold text-sky-600 flex justify-between items-center">
+                        Compromisso e Coerência
+                        <span>&#9660;</span>
+                    </button>
+                    <div class="accordion-content mt-2 text-slate-700">
+                        <p>Pessoas tendem a agir de forma consistente com compromissos anteriores. Solicite pequenos acordos. Ex: "Podemos concordar que a segurança digital é uma prioridade?" Ao final, reforce o compromisso para a próxima reunião.</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-4 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-xl font-semibold text-sky-600 flex justify-between items-center">
+                        Aprovação Social
+                        <span>&#9660;</span>
+                    </button>
+                    <div class="accordion-content mt-2 text-slate-700">
+                        <p>Pessoas seguem ações de outros semelhantes. Mencione clientes satisfeitos ou o número de empresas que confiam na Concierge. Ex: "Assim como outras instituições líderes..."</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-4 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-xl font-semibold text-sky-600 flex justify-between items-center">
+                        Simpatia (Carisma e Afinidade)
+                        <span>&#9660;</span>
+                    </button>
+                    <div class="accordion-content mt-2 text-slate-700">
+                        <p>Maior probabilidade de concordar com quem se gosta. Encontre pontos em comum, seja amigável, demonstre interesse. Ex: "Foi um prazer conversar sobre [ponto em comum]..."</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-4 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-xl font-semibold text-sky-600 flex justify-between items-center">
+                        Unidade
+                        <span>&#9660;</span>
+                    </button>
+                    <div class="accordion-content mt-2 text-slate-700">
+                        <p>Pessoas aceitam propostas de quem consideram "um deles". Destaque semelhanças. Ex: "Como profissionais da área de tecnologia, entendemos os desafios..."</p>
+                    </div>
+                </div>
+            </div>
+             <p class="mt-6 bg-sky-100 p-4 rounded-lg border border-sky-300 text-sky-800"><strong>Insight:</strong> A integração consciente dos princípios de persuasão eleva o primeiro contato, construindo confiança e influência para um relacionamento de longo prazo.</p>
+        </section>
+
+        <section id="contexto" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">V. Contextualizando a Dor: Cenário de Cibersegurança e Desafios de TI</h1>
+            
+            <h2 class="text-2xl font-semibold mb-3 text-sky-600">Panorama das Ameaças no Brasil (Setor Educacional)</h2>
+            <p class="mb-4">Apresentar dados de mercado contextualiza a ameaça, tornando-a tangível.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-lg text-sky-700">Incidentes de Cibersegurança</h3>
+                    <p class="text-3xl font-bold">1.780 <span class="text-sm">incidentes/ano</span></p>
+                    <p class="text-xs text-slate-500">Fonte: Relatório Verizon</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="font-semibold text-lg text-sky-700">Vazamentos de Dados Confirmados</h3>
+                    <p class="text-3xl font-bold">1.537 <span class="text-sm">vazamentos/ano</span></p>
+                    <p class="text-xs text-slate-500">Fonte: Relatório Verizon</p>
+                </div>
+            </div>
+            <div class="chart-container mb-6 bg-white p-4 rounded-lg shadow">
+                <canvas id="cyberSecurityChart"></canvas>
+            </div>
+            <ul class="list-disc list-inside mb-6 bg-white p-4 rounded-lg shadow space-y-1">
+                <li>Padrões de ataque comuns: Intrusão em sistemas, engenharia social, erros diversos (90% das violações).</li>
+                <li>Origem dos ataques: Atores externos (68%).</li>
+                <li>Motivação principal: Financeira (98%).</li>
+                <li>Dados mais comprometidos: Informações pessoais (83%).</li>
+            </ul>
+            <p class="mb-4"><strong>Impactos diretos no negócio:</strong> Perdas financeiras, interrupção de serviços, danos à reputação e credibilidade.</p>
+
+            <h2 class="text-2xl font-semibold mt-8 mb-3 text-sky-600">VI. O Desafio da Equipe de TI: Sobrecarga e Vulnerabilidades</h2>
+            <p class="mb-4">A sobrecarga da equipe de TI é um ponto de dor profundo que a Concierge pode resolver.</p>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold text-sky-600 mb-2">Realidade Multifacetada da Equipe de TI</h3>
+                <p class="mb-2">Gestão de infraestrutura, helpdesk, segurança, monitoramento, pressão por prazos, longas horas, múltiplas tarefas simultâneas.</p>
+                <h3 class="text-xl font-semibold text-sky-600 mb-2">Consequências da Sobrecarga na Segurança</h3>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>Falha na identificação de todas as ameaças, lacunas na visibilidade.</li>
+                    <li>Exaustão levando a erros e comprometimento da capacidade de resposta.</li>
+                    <li>Lacunas na segurança de APIs.</li>
+                    <li>Esgotamento profissional, incapacidade de se desconectar (falta de monitoramento 100%).</li>
+                </ul>
+                <h3 class="text-xl font-semibold text-sky-600 mt-3 mb-2">Custo Oculto da Inação</h3>
+                <p>Operação em modo reativo contínuo, aumentando risco de inoperância, vazamento de dados e custos a longo prazo.</p>
+            </div>
+            <p class="mt-6 bg-sky-100 p-4 rounded-lg border border-sky-300 text-sky-800"><strong>Insight:</strong> Conectar o sofrimento pessoal da equipe de TI diretamente ao risco de cibersegurança da empresa. A Concierge vende paz de espírito, bem-estar dos funcionários e uma postura de segurança mais forte.</p>
+        </section>
+
+        <section id="solucao" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">VII. Concierge Segurança Digital: A Solução Estratégica</h1>
+            <p class="mb-4">A Concierge oferece a terceirização de serviços de segurança essenciais, posicionando-se como um parceiro estratégico.</p>
+
+            <h2 class="text-2xl font-semibold mb-3 text-sky-600">Nossos Serviços Principais</h2>
+            <div class="space-y-4 mb-6">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-700">Concierge Firewall</h3>
+                    <p>Proteção robusta contra ameaças de entrada e saída, monitorando o tráfego de rede. Oculta portas contra hackers e impede que softwares maliciosos transmitam dados confidenciais. Alerta sobre atividades suspeitas.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-700">Concierge Endpoint</h3>
+                    <p>Segurança dos dispositivos finais (computadores, notebooks, servidores). Proteção contra malwares, detecção e resposta a ameaças em tempo real, controle de acesso.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-700">Concierge Backup</h3>
+                    <p>Solução de backup em nuvem fácil de gerenciar, com gerenciamento centralizado. Assinatura mensal flexível, sem investimento inicial. Suporte para diversos sistemas e plataformas. Criptografia de ponta a ponta, backups incrementais inteligentes, suporte técnico 24/7.</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold mb-3 text-sky-600">Proposta de Valor Central</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Benefícios para a Equipe de TI</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Desafogo significativo e redução da sobrecarga.</li>
+                        <li>Libera profissionais de TI para focar em atividades estratégicas (infra, helpdesk, inovação).</li>
+                        <li>Monitoramento 100% da segurança garantido pela Concierge.</li>
+                        <li>Paz de espírito, capacidade de se desconectar do trabalho.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Benefícios para a Empresa</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Monitoramento 100% e antecipação proativa de ameaças.</li>
+                        <li>Serviços de segurança de nível especializado para continuidade dos negócios.</li>
+                        <li>Parceria estratégica de responsabilidade compartilhada.</li>
+                        <li>Redução de riscos e custos ocultos associados a ataques.</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-6 bg-sky-100 p-4 rounded-lg border border-sky-300 text-sky-800"><strong>Insight:</strong> A narrativa de vendas deve mudar de "oferecemos serviços X, Y, Z" para "resolvemos a sobrecarga da sua TI, garantimos 100% de monitoramento para que durmam tranquilos e protegemos proativamente seu negócio".</p>
+        </section>
+
+        <section id="scripts" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">VIII & IX. Roteiros de Abordagem</h1>
+            
+            <div class="mb-6">
+                <div class="flex border-b border-slate-300">
+                    <button class="tab-link py-2 px-4 text-sky-600 border-b-2 border-sky-600 font-semibold" data-tab="detalhado">Roteiro Detalhado</button>
+                    <button class="tab-link py-2 px-4 text-slate-500" data-tab="direto">Roteiro Direto</button>
+                </div>
+            </div>
+
+            <div id="detalhado" class="tab-content space-y-3">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">Roteiro de Abordagem Detalhado</h2>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Abertura e Construção de Afinidade<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Quebrar o gelo, conexão inicial, ambiente de confiança. Pesquisa prévia sobre o lead.</p>
+                        <p><strong>Exemplo:</strong> "Olá [Nome do Lead], sou da Concierge Segurança Digital. Agradeço por dedicar um momento. Vi que [Nome da Empresa] tem se destacado em [mencione algo positivo sobre a empresa/setor]."</p>
+                        <p><strong>Adaptação por perfil:</strong> Afável (mais tempo informal), Expressivo (tom enérgico), Pragmático (direto, cordial), Analítico (formal, interesse genuíno).</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Identificação da Necessidade (BANT - Need)<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Mapear desafios de segurança e TI, incentivar verbalização das dores.</p>
+                        <p><strong>Início:</strong> "O motivo do meu contato é que conversamos com muitas empresas no seu setor que enfrentam desafios crescentes com a segurança digital, especialmente com a sobrecarga das equipes de TI."</p>
+                        <p><strong>Perguntas Abertas:</strong></p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>"Gostaria de entender: qual o maior desafio que sua equipe de TI enfrenta hoje em relação à segurança e monitoramento de rede?"</li>
+                            <li>"Como vocês estão lidando com a demanda crescente por segurança, infraestrutura e *helpdesk* simultaneamente?"</li>
+                            <li>"Que tipo de problema pode ocasionar suas operações institucionais ficarem inoperantes por dias devido a um ataque, ou vazamento de dados?"</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Contextualização da Dor e Sofrimento<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Validar dor com dados de mercado, mostrar que não está sozinho.</p>
+                        <p><strong>Contexto Cibersegurança:</strong> "Pergunto isso porque, como você deve saber, o cenário de cibersegurança no Brasil é cada vez mais desafiador. Por exemplo, em instituições educacionais como a sua, foram registrados 1.780 incidentes, com 1.537 vazamentos de dados confirmados no último ano..."</p>
+                        <p><strong>Contexto Sobrecarga TI:</strong> "É comum vermos equipes de TI sobrecarregadas... sem conseguir se antecipar a ataques... Isso gera um esgotamento..."</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Validação da Dor e Compromisso<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Obter concordância do lead sobre o problema e impacto, criar pequeno compromisso.</p>
+                        <p><strong>Perguntas:</strong></p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>"Faz sentido para você essa realidade? Sua equipe de TI se sente sobrecarregada...?"</li>
+                            <li>"Você concorda que a inoperância das operações ou um vazamento de dados traria impactos significativos...?"</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Introdução da Solução Concierge<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Posicionar Concierge como solução estratégica.</p>
+                        <p><strong>Transição:</strong> "É exatamente nesse ponto que a Concierge Segurança Digital atua. Nós oferecemos a terceirização de serviços de segurança essenciais, desafogando seu setor de TI..."</p>
+                        <p><strong>Benefício Principal:</strong> "Com a Concierge, sua equipe de TI não precisa mais se preocupar com o monitoramento 100% da segurança... permitindo que eles se antecipem a ataques... e tenham a tranquilidade de se desligar..."</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Qualificação de Orçamento e Autoridade<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Qualificar BANT (Budget, Authority) naturalmente.</p>
+                        <p><strong>Orçamento:</strong> "Muitas empresas que buscam essa tranquilidade... já têm um orçamento previsto... Vocês já têm alguma previsão de investimento...?"</p>
+                        <p><strong>Autoridade:</strong> "Para que eu possa apresentar a solução mais alinhada... é importante entender quem mais participa da decisão...?"</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Próximos Passos e Gatilho para Próximo Encontro<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Agendar próxima conversa, criar valor e urgência.</p>
+                        <p><strong>Proposta:</strong> "Com base no que conversamos... faria sentido agendarmos uma breve reunião para eu apresentar como a Concierge personaliza essa solução... mostrando um plano de ação e os resultados esperados?"</p>
+                        <p><strong>Inclusão de Decisores:</strong> "Nessa reunião, poderíamos incluir [outro decisor/influenciador]...?"</p>
+                        <p><strong>Agendamento:</strong> "Que dia e horário seriam mais convenientes... na próxima semana?"</p>
+                    </div>
+                </div>
+                <div class="accordion-item bg-white p-3 rounded-lg shadow">
+                    <button class="accordion-header w-full text-left text-lg font-semibold text-sky-700 flex justify-between items-center">Fechamento<span>&#9660;</span></button>
+                    <div class="accordion-content mt-2 text-slate-700 text-sm">
+                        <p><strong>Objetivo:</strong> Reforçar conexão e valor da parceria.</p>
+                        <p><strong>Frase:</strong> "Agradeço imensamente seu tempo e a abertura para compartilhar os desafios de [Nome da Empresa]. Tenho certeza que a Concierge pode ser uma parceira estratégica para vocês."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="direto" class="tab-content hidden space-y-2">
+                <h2 class="text-2xl font-semibold mb-3 text-sky-600">Roteiro de Abordagem Direto</h2>
+                <div class="bg-white p-4 rounded-lg shadow text-sm">
+                    <p><strong>Abertura e Conexão:</strong><br>"Olá [Nome do Lead], sou da Concierge Segurança Digital. Agradeço por dedicar um momento. Vi que [Nome da Empresa] tem se destacado em [mencione algo positivo sobre a empresa/setor]."</p>
+                    <hr class="my-2">
+                    <p><strong>Identificação da Necessidade:</strong><br>"O motivo do meu contato é que conversamos com muitas empresas no seu setor que enfrentam desafios crescentes com a segurança digital, especialmente com a sobrecarga das equipes de TI."<br>"Gostaria de entender: qual o maior desafio que sua equipe de TI enfrenta hoje em relação à segurança e monitoramento de rede? Como vocês estão lidando com a demanda crescente por segurança, infraestrutura e *helpdesk* simultaneamente?"<br>"Que tipo de problema pode ocasionar suas operações institucionais ficarem inoperantes por dias devido a um ataque, ou vazamento de dados?"</p>
+                    <hr class="my-2">
+                    <p><strong>Contextualização da Dor:</strong><br>"Pergunto isso porque, como você deve saber, o cenário de cibersegurança no Brasil é cada vez mais desafiador. Por exemplo, em instituições educacionais como a sua, foram registrados 1.780 incidentes, com 1.537 vazamentos de dados confirmados no último ano... Isso mostra que a ameaça é real..."<br>"É comum vermos equipes de TI sobrecarregadas... sem conseguir se antecipar a ataques... Isso gera um esgotamento..."</p>
+                    <hr class="my-2">
+                    <p><strong>Validação e Compromisso:</strong><br>"Faz sentido para você essa realidade? Sua equipe de TI se sente sobrecarregada...?"<br>"Você concorda que a inoperância das operações ou um vazamento de dados traria impactos significativos...?"</p>
+                    <hr class="my-2">
+                    <p><strong>Introdução da Solução Concierge:</strong><br>"É exatamente nesse ponto que a Concierge Segurança Digital atua. Nós oferecemos a terceirização de serviços de segurança essenciais, desafogando seu setor de TI..."<br>"Com a Concierge, sua equipe de TI não precisa mais se preocupar com o monitoramento 100% da segurança... permitindo que eles se antecipem a ataques... e tenham a tranquilidade de se desligar..."<br>"Nossos serviços incluem <strong>Concierge Firewall</strong>, <strong>Concierge Endpoint</strong> e <strong>Concierge Backup</strong>, oferecendo uma proteção completa e gerenciada."</p>
+                    <hr class="my-2">
+                    <p><strong>Qualificação de Orçamento e Autoridade:</strong><br>"Muitas empresas que buscam essa tranquilidade... já têm um orçamento previsto... Vocês já têm alguma previsão de investimento...?"<br>"Para que eu possa apresentar a solução mais alinhada... é importante entender quem mais participa da decisão...?"</p>
+                    <hr class="my-2">
+                    <p><strong>Próximos Passos e Agendamento:</strong><br>"Com base no que conversamos... faria sentido agendarmos uma breve reunião para eu apresentar como a Concierge personaliza essa solução...?"<br>"Nessa reunião, poderíamos incluir [outro decisor/influenciador]...?"<br>"Que dia e horário seriam mais convenientes...?"</p>
+                    <hr class="my-2">
+                    <p><strong>Fechamento:</strong><br>"Agradeço imensamente seu tempo... Tenho certeza que a Concierge pode ser uma parceira estratégica..."</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="recomendacoes" class="content-section">
+            <h1 class="text-3xl font-bold mb-6 text-sky-700">X. Recomendações Finais para o Executivo de Contas Jr.</h1>
+            <div class="space-y-4">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">A Importância da Escuta Ativa e Empatia</h3>
+                    <p>O roteiro é um guia, não um script rígido. Ouça atentamente, faça perguntas pertinentes, demonstre empatia. Adapte a conversa em tempo real, construa rapport autêntico.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Foco Contínuo no Valor e na Solução, Não Apenas no Produto</h3>
+                    <p>O cliente busca resolução de problemas e tranquilidade. Mantenha foco no valor que a Concierge oferece. Conecte capacidades aos benefícios diretos para TI e para o negócio.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">Prática e Adaptação Constante do Roteiro</h3>
+                    <p>Revise e pratique regularmente. Use a experiência em campo para adaptar e refinar a abordagem. Analise feedbacks, identifique pontos de engajamento e ajuste.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        function showSection(targetId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === targetId) {
+                    section.classList.add('active');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.target === targetId) {
+                    link.classList.add('active');
+                }
+            });
+            window.scrollTo(0, 0); // Scroll to top on section change
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.target.closest('.nav-link').dataset.target;
+                showSection(targetId);
+            });
+        });
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('span');
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                    icon.innerHTML = '&#9660;'; // Down arrow
+                } else {
+                    content.style.display = "block";
+                    icon.innerHTML = '&#9650;'; // Up arrow
+                }
+            });
+        });
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetTab = e.target.dataset.tab;
+
+                tabLinks.forEach(tl => {
+                    tl.classList.remove('text-sky-600', 'border-sky-600', 'font-semibold');
+                    tl.classList.add('text-slate-500');
+                });
+                e.target.classList.add('text-sky-600', 'border-sky-600', 'font-semibold');
+                e.target.classList.remove('text-slate-500');
+                
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                    if (content.id === targetTab) {
+                        content.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+        
+        // Initial section display based on hash or default to home
+        const initialTarget = window.location.hash ? window.location.hash.substring(1) : 'home';
+        showSection(initialTarget);
+        navLinks.forEach(link => { // Ensure correct active link on load
+            if (link.dataset.target === initialTarget) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+
+        // Chart.js
+        const ctx = document.getElementById('cyberSecurityChart')?.getContext('2d');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Incidentes de Cibersegurança (Setor Educacional)', 'Vazamentos de Dados Confirmados (Setor Educacional)'],
+                    datasets: [{
+                        label: 'Número de Ocorrências/Ano',
+                        data: [1780, 1537],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)', // sky-500
+                            'rgba(14, 165, 233, 0.7)'  // sky-600
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(14, 165, 233, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Número de Ocorrências'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
